@@ -1,0 +1,195 @@
+'use client';
+
+import { useRef, useMemo, useEffect, useState } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Points, PointMaterial, Sphere, Torus, MeshDistortMaterial, OrbitControls } from '@react-three/drei';
+import * as THREE from 'three';
+
+// Performance detection
+function usePerformanceLevel() {
+  const [performanceLevel, setPerformanceLevel] = useState<'high' | 'medium' | 'low'>('medium');
+  
+  useEffect(() => {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const cores = navigator.hardwareConcurrency || 1;
+    
+    let level: 'high' | 'medium' | 'low' = 'medium';
+    
+    if (isMobile || cores < 2) {
+      level = 'low';
+    } else if (cores >= 4) {
+      level = 'high';
+    }
+    
+    setPerformanceLevel(level);
+  }, []);
+  
+  return performanceLevel;
+}
+
+// Advanced Particle System
+function ParticleField({ count = 2000 }) { // Reduced from 5000
+  const mesh = useRef<THREE.Points>(null!);
+  
+  const particles = useMemo(() => {
+    const temp = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      temp.set([
+        (Math.random() - 0.5) * 50,
+        (Math.random() - 0.5) * 50,
+        (Math.random() - 0.5) * 50
+      ], i * 3);
+    }
+    return temp;
+  }, [count]);
+
+  useFrame((state) => {
+    if (mesh.current) {
+      mesh.current.rotation.x = state.clock.elapsedTime * 0.02; // Reduced from 0.1
+      mesh.current.rotation.y = state.clock.elapsedTime * 0.01; // Reduced from 0.05
+    }
+  });
+
+  return (
+    <Points ref={mesh} positions={particles} stride={3} frustumCulled={false}>
+      <PointMaterial
+        transparent
+        color="#3b82f6"
+        size={0.02}
+        sizeAttenuation={true}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+    </Points>
+  );
+}
+
+// Interactive Floating Geometries
+function FloatingGeometry() {
+  const torusRef = useRef<THREE.Mesh>(null!);
+  const sphereRef = useRef<THREE.Mesh>(null!);
+  
+  useFrame((state) => {
+    if (torusRef.current) {
+      torusRef.current.rotation.x = state.clock.elapsedTime * 0.1; // Reduced from 0.3
+      torusRef.current.rotation.y = state.clock.elapsedTime * 0.08; // Reduced from 0.2
+      torusRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.3; // Slower movement
+    }
+    
+    if (sphereRef.current) {
+      sphereRef.current.rotation.x = state.clock.elapsedTime * 0.15; // Reduced from 0.4
+      sphereRef.current.position.x = Math.cos(state.clock.elapsedTime * 0.3) * 2; // Slower from 0.5
+      sphereRef.current.position.z = Math.sin(state.clock.elapsedTime * 0.2) * 1.5; // Slower from 0.3
+    }
+  });
+
+  return (
+    <group>
+      <Torus ref={torusRef} args={[1, 0.3, 16, 32]} position={[3, 0, -2]}>
+        <MeshDistortMaterial
+          color="#8b5cf6"
+          attach="material"
+          distort={0.2} // Reduced from 0.4
+          speed={0.8} // Reduced from 2
+          roughness={0.1}
+          metalness={0.8}
+        />
+      </Torus>
+      
+      <Sphere ref={sphereRef} args={[0.8]} position={[-3, 1, -1]}>
+        <MeshDistortMaterial
+          color="#06b6d4"
+          attach="material"
+          distort={0.3} // Reduced from 0.6
+          speed={0.7} // Reduced from 1.5
+          roughness={0}
+          metalness={1}
+        />
+      </Sphere>
+    </group>
+  );
+}
+
+// Holographic Code Display
+function HolographicCode() {
+  const codeRef = useRef<THREE.Group>(null!);
+  
+  useFrame((state) => {
+    if (codeRef.current) {
+      codeRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
+    }
+  });
+
+  return (
+    <group ref={codeRef} position={[0, 0, -3]}>
+      <Sphere args={[0.5, 32, 32]}>
+        <meshStandardMaterial 
+          color="#10b981" 
+          emissive="#065f46"
+          emissiveIntensity={0.2}
+          transparent
+          opacity={0.8}
+        />
+      </Sphere>
+    </group>
+  );
+}
+
+export default function Advanced3DHero() {
+  const performanceLevel = usePerformanceLevel();
+  
+  // Don't render 3D on very low performance devices
+  if (performanceLevel === 'low') {
+    return (
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950 dark:via-indigo-950 dark:to-purple-950">
+        <div className="absolute inset-0 opacity-20">
+          <div className="w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.3),transparent_50%)]" />
+        </div>
+      </div>
+    );
+  }
+  
+  const particleCount = performanceLevel === 'high' ? 2000 : 1000;
+  
+  return (
+    <div className="absolute inset-0 z-0">
+      <Canvas
+        camera={{ position: [0, 0, 10], fov: 75 }}
+        gl={{ 
+          antialias: performanceLevel === 'high', // Only enable on high-performance devices
+          alpha: true,
+          powerPreference: "high-performance"
+        }}
+        dpr={performanceLevel === 'high' ? [1, 1.5] : [1, 1]} // Adaptive pixel ratio
+        performance={{ min: performanceLevel === 'high' ? 0.5 : 0.3 }}
+        frameloop="demand"
+      >
+        {/* Simplified Lighting for better performance */}
+        <ambientLight intensity={0.4} />
+        <pointLight position={[10, 10, 10]} intensity={0.8} color="#3b82f6" />
+        {performanceLevel === 'high' && (
+          <pointLight position={[-10, -10, -5]} intensity={0.3} color="#8b5cf6" />
+        )}
+        
+        {/* Particle Field */}
+        <ParticleField count={particleCount} />
+        
+        {/* Floating Geometries - only on medium+ performance */}
+        {performanceLevel !== 'low' && <FloatingGeometry />}
+        
+        {/* Holographic Code - only on high performance */}
+        {performanceLevel === 'high' && <HolographicCode />}
+        
+        {/* Interactive Controls */}
+        <OrbitControls
+          enableZoom={false}
+          enablePan={false}
+          autoRotate
+          autoRotateSpeed={performanceLevel === 'high' ? 0.2 : 0.1}
+          maxPolarAngle={Math.PI / 2}
+          minPolarAngle={Math.PI / 2}
+        />
+      </Canvas>
+    </div>
+  );
+}
