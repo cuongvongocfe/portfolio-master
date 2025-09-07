@@ -173,13 +173,22 @@ export default function OptimizedCVViewer({ isOpen, onClose, cvUrl }: OptimizedC
                 tooltip={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
               />
 
+              {/*
               {cvUrl && (
                 <ControlButton
-                  onClick={() => window.open(cvUrl, '_blank')}
+                  onClick={() => {
+                    const link = document.createElement('a');
+                    link.href = cvUrl;
+                    link.download = cvUrl.split('/').pop() || 'CV.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}
                   icon={Download}
                   tooltip="Download PDF"
                 />
               )}
+              */}
 
               <ControlButton
                 onClick={onClose}
