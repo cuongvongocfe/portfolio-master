@@ -18,7 +18,6 @@ import Footer from '@/components/ui/Footer';
 
 // Hero and Introduction Sections
 import HeroSection from '@/components/sections/HeroSection';
-// import Advanced3DHero from '@/components/3d/Advanced3DHero';
 import AboutSection from '@/components/sections/AboutSection';
 
 // Skills and Technical Showcase
@@ -27,16 +26,8 @@ import TechnicalSkillsVisualization from '@/components/sections/TechnicalSkillsV
 
 // Project and Experience Sections
 import ExperienceSection from '@/components/sections/ExperienceSection';
-// import ProjectsSection from '@/components/sections/ProjectsSection';
-// import BlockchainDashboard from '@/components/sections/BlockchainDashboard';
 import CreativeFrontendPlayground from '@/components/sections/CreativeFrontendPlayground';
-// import InteractiveCodeEditor from '@/components/sections/InteractiveCodeEditor';
 import AlgorithmVisualization from '@/components/sections/AlgorithmVisualization';
-
-// Advanced Interactive Components (Currently Disabled for Performance)
-// import WebGLParticleSystem from '@/components/sections/WebGLParticleSystem';
-// import PerformanceDashboard from '@/components/sections/PerformanceDashboard';
-import MatrixTerminal from '@/components/sections/MatrixTerminal';
 
 // Contact and Footer
 import ContactSection from '@/components/sections/ContactSection';
@@ -71,7 +62,6 @@ export default function Home() {
         {/* Hero and Introduction Sections */}
         <div className="space-y-8 sm:space-y-12 lg:space-y-16">
           <HeroSection />
-          {/* <Advanced3DHero /> */}
           <AboutSection />
         </div>
         
@@ -90,7 +80,6 @@ export default function Home() {
         <div className="space-y-8 sm:space-y-12 lg:space-y-16 mt-8 sm:mt-12 lg:mt-16">
           <CreativeFrontendPlayground />
           <AlgorithmVisualization />
-          <MatrixTerminal />
         </div>
         
         {/* Contact Section */}
@@ -98,13 +87,6 @@ export default function Home() {
           <ContactSection />
         </div>
         
-        {/* 
-          Heavy Interactive Components - Currently Disabled for Performance
-          These can be re-enabled when needed:
-          - <WebGLParticleSystem />
-          - <PerformanceDashboard />
-          - <MatrixTerminal />
-        */}
       </main>
       
       {/* Site Footer */}

@@ -107,7 +107,6 @@ export default function Header() {
     { label: 'Experience', id: 'experience' },
     { label: 'Playground', id: 'frontend-playground' },
     { label: 'Algorithms', id: 'algorithm-visualization' },
-    { label: 'Matrix', id: 'matrix-terminal' },
     { label: 'Contact', id: 'contact' }
   ];
 

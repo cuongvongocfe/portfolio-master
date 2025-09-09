@@ -14,8 +14,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-// import PerformanceProvider from "@/components/ui/PerformanceProvider";
-// import PerformanceDebugOverlay from "@/components/ui/PerformanceDebugOverlay";
 
 /**
  * Geist Sans Font Configuration
@@ -82,11 +80,6 @@ export default function RootLayout({
         {/* <PerformanceProvider> */}
           {/* Application Content */}
           {children}
-          
-          {/* Development Performance Debug Overlay - Temporarily disabled */}
-          {/* <PerformanceDebugOverlay /> */}
-        {/* </PerformanceProvider> */}
-        
         {/* 
           Font Variables Available Throughout App:
           - var(--font-geist-sans) - For UI text and headings

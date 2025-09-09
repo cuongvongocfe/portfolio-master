@@ -61,7 +61,7 @@ export const siteConfig: SiteConfig = {
   links: {
     linkedin: "https://www.linkedin.com/in/cuong-vo-ngoc-b6b742226/",
     github: "https://github.com/cuongvongocfe",
-  cv: "/pdf/VONGOCCUONG-CV.pdf",
+  cv: "/pdf/VONGOCCUONG.pdf",
   email: "gtsvongoccuong@gmail.com",
     phone: "+84 833.1414.99",
     twitter: "https://twitter.com/YOUR_TWITTER"
